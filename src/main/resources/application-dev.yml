@@ -1,0 +1,59 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: th-admin
+  jackson:
+    time-zone: GMT+8
+  datasource:
+    druid:
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: jdbc:log4jdbc:mysql://114.55.54.77:3306/th-admin?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+      username: fs
+      password: Aa@123456
+      initial-size: 5 # 初始连接数
+      min-idle: 15 # 最小连接数
+      max-active: 30 # 最大连接数
+      remove-abandoned-timeout: 180 # 超时时间，秒
+      max-wait: 3000 # 获取连接超时时间
+      time-between-eviction-runs-millis: 60000 # 连接有效检测时间
+      min-evictable-idle-time-millis: 300000 # 连接池中最小生存时间
+      max-evictable-idle-time-millis: 900000 # 连接池中最大生产时间
+      test-while-idle: true # 指明连接是否被空闲连接回收器进行检验，如果检验失败，则连接将被从池中去除
+      test-on-borrow: true # 指明是否在从池中取出连接前进行检验，如果检验失败，则从池中去除连接并尝试获取另一个
+      test-on-return: false # 是否在归还到池中前进行校验
+      validation-query: select 1 # 检测连接是否有效
+      web-stat-filter:
+        enabled: true # 配置监控统计
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true # 记录慢 SQL
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+  data:
+    redis:
+      repositories:
+        enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  redis:
+    database: 0
+    host: 114.55.54.77
+    port: 6379
+    password: Aa@123456
+    connect-timeout: 5000
