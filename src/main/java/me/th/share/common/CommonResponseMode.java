@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum CommonResponseMode implements IResponseMode {
-    SUCCESS(5000, "成功"),
+    SUCCESS(200, "成功"),
     BAD_REQUEST(HttpStatus.BAD_REQUEST.value(), "错误的请求"),
     NOT_FOUND(HttpStatus.NOT_FOUND.value(), "未找到"),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED.value(), "不允许的方法"),

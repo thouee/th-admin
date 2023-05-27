@@ -5,6 +5,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.th.share.constant.Constant;
+import me.th.share.properties.AppProperties;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 import net.dreamlu.mica.ip2region.core.IpInfo;
 import nl.basjes.parse.useragent.UserAgent;
@@ -58,6 +59,14 @@ public class WebUtils {
 
     private static boolean ipIsNull(String ip) {
         return ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip);
+    }
+
+    public static String getCityInfo(String ip) {
+        if (AppProperties.localParse) {
+            return getLocalCityInfo(ip);
+        } else {
+            return getHttpCityInfo(ip);
+        }
     }
 
     /**
