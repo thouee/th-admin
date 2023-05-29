@@ -16,7 +16,7 @@
     </root>
 
     <!-- 监控 sql 日志输出，level 为 INFO 时会打印 SQL -->
-    <logger name="jdbc.sqlonly" level="ERROR" additivity="false">
+    <logger name="jdbc.sqlonly" level="INFO" additivity="false">
         <appender-ref ref="console" />
     </logger>
 
