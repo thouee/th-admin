@@ -5,8 +5,12 @@ import lombok.Getter;
 @Getter
 public enum Checker implements BizExceptionCheck {
     SERVER_ERROR(2001, "服务器内部异常"),
-    AUTH_EXPIRE(3001, "当前登录状态过期"),
-    AUTH_NOT_FOUND(3002, "找不到当前登录的信息")
+    CONFIGURATION_ERROR(2002, "{0}"), // 配置错误，{0} 为自定义异常信息
+    ENTITY_NOT_FOUND_ERROR(2003, "{0}不存在"), // 实体找不到错误，{0} 为传入实体名
+    ENTITY_EXIST_ERROR(2004, "{0}"), // 实体已存在错误
+    AUTH_EXPIRE_ERROR(3001, "当前登录状态过期"),
+    AUTH_NOT_FOUND(3002, "找不到当前登录的信息"),
+    USER_NOT_ENABLED(4001, "用户被禁用"),
     ;
 
     private final Integer code;

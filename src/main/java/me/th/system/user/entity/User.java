@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -79,5 +79,5 @@ public class User extends BaseEntity {
     /**
      * 密码修改时间
      */
-    private Timestamp pwdResetTime;
+    private Date pwdResetTime;
 }

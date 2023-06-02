@@ -30,7 +30,7 @@ public class SecurityUtils {
      */
     public static String getCurrentUsername() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Checker.AUTH_EXPIRE.isNull(authentication);
+        Checker.AUTH_EXPIRE_ERROR.isNull(authentication);
 
         if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
