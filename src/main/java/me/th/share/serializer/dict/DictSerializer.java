@@ -25,7 +25,7 @@ public class DictSerializer extends JsonSerializer<Object> implements Contextual
         // 查询不到就说明没有这个字典项，直接返回空
 
         ObjectNode node = JacksonUtils.newObjectNode();
-        node.put("code", "");
+        node.putPOJO("code", value);
         node.put("label", "");
         jsonGenerator.writeObject(node);
         key.remove();
