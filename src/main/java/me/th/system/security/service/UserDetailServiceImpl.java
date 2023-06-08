@@ -24,9 +24,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
             UserLoginDto loginData = userService.getLoginData(username);
+            // if 用户被禁用
             Checker.USER_NOT_ENABLED.isTrue(!loginData.getEnabled());
-            JwtUserDto jwtUserDto = new JwtUserDto(loginData, Set.of());
-            return jwtUserDto;
+
+            return new JwtUserDto(loginData, Set.of());
         } catch (Exception e) {
             throw new UsernameNotFoundException("");
         }

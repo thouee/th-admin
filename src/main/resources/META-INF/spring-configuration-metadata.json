@@ -1,0 +1,98 @@
+{
+  "properties": [
+    {
+      "name": "login.single-login",
+      "type": "java.lang.Boolean",
+      "defaultValue": "false",
+      "description": "账号单用户登录"
+    },
+    {
+      "name": "login.login-captcha.captcha-type",
+      "type": "me.th.system.security.domain.LoginCaptchaMode",
+      "defaultValue": "arithmetic",
+      "description": "验证码类型"
+    },
+    {
+      "name": "login.login-captcha.expire",
+      "type": "java.lang.Long",
+      "defaultValue": "2",
+      "description": "验证码有效期，单位分钟"
+    },
+    {
+      "name": "login.login-captcha.length",
+      "type": "java.lang.Integer",
+      "defaultValue": "2",
+      "description": "验证码内容长度"
+    },
+    {
+      "name": "login.login-captcha.width",
+      "type": "java.lang.Integer",
+      "defaultValue": "100",
+      "description": "验证码宽度"
+    },
+    {
+      "name": "login.login-captcha.height",
+      "type": "java.lang.Integer",
+      "defaultValue": "36",
+      "description": "验证码高度"
+    },
+    {
+      "name": "login.login-captcha.font-name",
+      "type": "java.lang.String",
+      "description": "验证码字体"
+    },
+    {
+      "name": "login.login-captcha.font-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "25",
+      "description": "字体大小"
+    },
+    {
+      "name": "security.jwt.header",
+      "type": "java.lang.String",
+      "defaultValue": "Authorization",
+      "description": "请求头名称"
+    },
+    {
+      "name": "security.jwt.prefix",
+      "type": "java.lang.String",
+      "defaultValue": "Bearer",
+      "description": "令牌前缀，不需要加空格"
+    },
+    {
+      "name": "security.jwt.base64-secret",
+      "type": "java.lang.String",
+      "description": "必须使用最少88位的Base64对该令牌进行编码"
+    },
+    {
+      "name": "security.jwt.expire",
+      "type": "java.lang.Long",
+      "defaultValue": "1_800_000L，30分钟",
+      "description": "token 过期时间，单位毫秒"
+    },
+    {
+      "name": "security.jwt.online-key",
+      "type": "java.lang.String",
+      "defaultValue": "ONLINE-TOKEN-",
+      "description": "在线用户 key，根据 key 查询 redis 中在线用户的数据"
+    },
+    {
+      "name": "security.jwt.captcha-key",
+      "type": "java.lang.String",
+      "defaultValue": "CAPTCHA-",
+      "description": "验证码 key"
+    },
+    {
+      "name": "security.jwt.detect",
+      "type": "java.lang.Long",
+      "defaultValue": "300_000L，5分钟",
+      "description": "token 续期检测时长，单位毫秒"
+    },
+    {
+      "name": "security.jwt.renew",
+      "type": "java.lang.Long",
+      "defaultValue": "1_800_000L，30分钟",
+      "description": "token 续期时间，单位毫秒"
+    }
+  ]
+}

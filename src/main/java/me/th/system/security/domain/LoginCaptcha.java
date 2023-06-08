@@ -5,12 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginCode {
+public class LoginCaptcha {
 
     /**
      * 验证码类型
      */
-    private LoginCodeMode codeType = LoginCodeMode.ARITHMETIC;
+    private LoginCaptchaMode captchaType = LoginCaptchaMode.ARITHMETIC;
     /**
      * 验证码有效期，单位分钟
      */
@@ -22,7 +22,7 @@ public class LoginCode {
     /**
      * 验证码宽度
      */
-    private int width = 111;
+    private int width = 100;
     /**
      * 验证码高度
      */

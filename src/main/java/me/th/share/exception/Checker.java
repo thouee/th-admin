@@ -10,6 +10,8 @@ public enum Checker implements BizExceptionCheck {
     ENTITY_EXIST_ERROR(2004, "{0}"), // 实体已存在错误
     AUTH_EXPIRE_ERROR(3001, "当前登录状态过期"),
     AUTH_NOT_FOUND(3002, "找不到当前登录的信息"),
+    CAPTCHA_NOT_FOUND(3003, "验证码已过期"),
+    CAPTCHA_INCORRECT(3004, "验证码不正确"),
     USER_NOT_ENABLED(4001, "用户被禁用"),
     ;
 

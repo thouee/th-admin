@@ -1,6 +1,6 @@
 package me.th.system.security.domain;
 
-public enum LoginCodeMode {
+public enum LoginCaptchaMode {
 
     ARITHMETIC,
     CHINESE,

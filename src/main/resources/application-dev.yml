@@ -58,10 +58,30 @@ spring:
     open-in-view: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
   redis:
     database: 0
     host: 114.55.54.77
     port: 6379
     password: Aa@123456
     connect-timeout: 5000
+
+login:
+  single-login: false
+  login-captcha:
+    captcha-type: arithmetic
+    expire: 5
+    length: 4
+    font-size: 25
+    width: 100
+    height: 36
+security:
+  jwt:
+    header: Authorization
+    prefix: Bearer
+    captcha-key: CAPTCHA-
+    online-key: ONLINE-USER-
+    expire: 1_800_000
+    detect: 300_000
+    renew: 1_800_000
+    base64-secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI

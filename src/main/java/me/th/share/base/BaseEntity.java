@@ -47,18 +47,6 @@ public class BaseEntity implements Serializable {
 
     // TODO 此处可根据需要添加 is_deleted
 
-    /**
-     * 分组校验
-     */
-    public @interface Create {
-    }
-
-    /**
-     * 分组校验
-     */
-    public @interface Update {
-    }
-
     @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);

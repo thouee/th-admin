@@ -1,4 +1,4 @@
-package me.th.system.security.token;
+package me.th.system.security.component;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
@@ -12,6 +12,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import me.th.share.exception.Checker;
 import me.th.share.util.RedisUtils;
 import me.th.system.security.domain.SecurityProperties;
 import org.apache.commons.compress.utils.Lists;
@@ -32,7 +33,7 @@ public class TokenProvider implements InitializingBean {
 
     private final SecurityProperties properties;
     private final RedisUtils redisUtils;
-    private static final String AUTHORITIES_KEY = "user";
+    public static final String AUTHORITIES_KEY = "user";
     private JwtParser jwtParser;
     private JwtBuilder jwtBuilder;
 
@@ -43,6 +44,7 @@ public class TokenProvider implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        Checker.CONFIGURATION_ERROR.isNull(properties.getBase64Secret(), "JWT 配置出错，请设置属性 base64-secret");
         byte[] keyBytes = Decoders.BASE64.decode(properties.getBase64Secret());
         Key key = Keys.hmacShaKeyFor(keyBytes);
         jwtParser = Jwts.parserBuilder().setSigningKey(key).build();
@@ -91,17 +93,18 @@ public class TokenProvider implements InitializingBean {
         DateTime expireDate = DateUtil.offset(new Date(), DateField.MILLISECOND, (int) time);
         // 当前时间与过期时间的时间差
         long differ = expireDate.getTime() - System.currentTimeMillis();
+        Checker.AUTH_EXPIRE_ERROR.isTrue(differ <= 0);
         // 如果在续签检查时间范围内，则续签
         if (differ <= properties.getDetect()) {
             long renew = time + properties.getRenew();
-            redisUtils.expire(properties.getCodeKey() + token, renew, TimeUnit.MILLISECONDS);
+            redisUtils.expire(properties.getCaptchaKey() + token, renew, TimeUnit.MILLISECONDS);
         }
     }
 
     public String getToken(HttpServletRequest request) {
-        String header = request.getHeader(properties.getHeader());
-        if (header != null && header.startsWith(properties.getPrefix())) {
-            return header.substring(properties.getPrefix().length() + 1);
+        String token = request.getHeader(properties.getHeader());
+        if (token != null && token.startsWith(properties.getPrefix())) {
+            return token.substring(properties.getPrefix().length() + 1);
         }
         return null;
     }

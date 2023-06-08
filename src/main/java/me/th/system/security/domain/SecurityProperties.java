@@ -23,23 +23,23 @@ public class SecurityProperties {
     /**
      * 令牌过期时间，单位毫秒
      */
-    private Long expire;
+    private Long expire = 1_800_000L;
     /**
      * 在线用户 key，根据 key 查询 redis 中在线用户的数据
      */
-    private String onlineKey;
+    private String onlineKey = "ONLINE-TOKEN-";
     /**
      * 验证码
      */
-    private String codeKey;
+    private String captchaKey = "CAPTCHA-";
     /**
      * token 续期检测
      */
-    private Long detect;
+    private Long detect = 300_000L;
     /**
      * 续期时间
      */
-    private Long renew;
+    private Long renew = 1_800_000L;
 
     public String getPrefix() {
         return StringUtils.trim(prefix) + " ";

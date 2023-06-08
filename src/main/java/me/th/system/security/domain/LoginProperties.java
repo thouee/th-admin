@@ -24,10 +24,10 @@ public class LoginProperties {
      */
     private boolean singleLogin = false;
 
-    private LoginCode loginCode;
+    private LoginCaptcha loginCaptcha;
 
     public static final String cacheKey = "USER-LOGIN-CODE";
-    private static final String[] OPERATOR = {"+", "-", "×"};
+    private static final String[] OPERATOR = {"+", "-", "x"};
 
     /**
      * 生成验证码
@@ -35,12 +35,12 @@ public class LoginProperties {
      * @return Captcha
      */
     public Captcha getCaptcha() {
-        return doGetCaptcha(Objects.isNull(loginCode) ? new LoginCode() : loginCode);
+        return doGetCaptcha(Objects.isNull(loginCaptcha) ? new LoginCaptcha() : loginCaptcha);
     }
 
-    private Captcha doGetCaptcha(LoginCode loginCode) {
+    private Captcha doGetCaptcha(LoginCaptcha loginCaptcha) {
         Captcha captcha = null;
-        switch (loginCode.getCodeType()) {
+        switch (loginCaptcha.getCaptchaType()) {
             case ARITHMETIC:
                 captcha = new FixedArithmeticCaptcha();
                 break;
@@ -57,14 +57,14 @@ public class LoginProperties {
                 captcha = new SpecCaptcha();
                 break;
             default:
-                throw Checker.CONFIGURATION_ERROR.newException("验证码配置错误，暂不支持该类型：" + loginCode.getCodeType());
+                throw Checker.CONFIGURATION_ERROR.newException("验证码配置错误，暂不支持该类型：" + loginCaptcha.getCaptchaType());
         }
 
-        captcha.setWidth(loginCode.getWidth());
-        captcha.setHeight(loginCode.getHeight());
-        captcha.setLen(loginCode.getLength());
-        if (StringUtils.isNotBlank(loginCode.getFontName())) {
-            captcha.setFont(new Font(loginCode.getFontName(), Font.PLAIN, loginCode.getFontSize()));
+        captcha.setWidth(loginCaptcha.getWidth());
+        captcha.setHeight(loginCaptcha.getHeight());
+        captcha.setLen(loginCaptcha.getLength());
+        if (StringUtils.isNotBlank(loginCaptcha.getFontName())) {
+            captcha.setFont(new Font(loginCaptcha.getFontName(), Font.PLAIN, loginCaptcha.getFontSize()));
         }
         return captcha;
     }
