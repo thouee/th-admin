@@ -1,9 +1,9 @@
-package me.th.system.security.config;
+package me.th.system.auth.config;
 
 import lombok.RequiredArgsConstructor;
-import me.th.system.security.domain.SecurityProperties;
-import me.th.system.security.component.TokenFilter;
-import me.th.system.security.component.TokenProvider;
+import me.th.system.auth.domain.SecurityProperties;
+import me.th.system.auth.component.TokenFilter;
+import me.th.system.auth.component.TokenProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;

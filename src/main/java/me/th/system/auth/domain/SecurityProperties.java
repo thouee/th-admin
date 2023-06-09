@@ -1,4 +1,4 @@
-package me.th.system.security.domain;
+package me.th.system.auth.domain;
 
 import lombok.Getter;
 import lombok.Setter;

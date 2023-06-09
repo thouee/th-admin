@@ -1,4 +1,4 @@
-package me.th.system.security.enums;
+package me.th.system.auth.enums;
 
 import lombok.Getter;
 

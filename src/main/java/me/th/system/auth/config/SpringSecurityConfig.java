@@ -1,12 +1,12 @@
-package me.th.system.security.config;
+package me.th.system.auth.config;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.map.MapUtil;
 import lombok.RequiredArgsConstructor;
 import me.th.share.rest.AnonymousAccess;
-import me.th.system.security.component.TokenProvider;
-import me.th.system.security.domain.SecurityProperties;
-import me.th.system.security.enums.RequestMethodMode;
+import me.th.system.auth.component.TokenProvider;
+import me.th.system.auth.domain.SecurityProperties;
+import me.th.system.auth.enums.RequestMethodMode;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,12 +32,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static me.th.system.security.enums.RequestMethodMode.ALL;
-import static me.th.system.security.enums.RequestMethodMode.DELETE;
-import static me.th.system.security.enums.RequestMethodMode.GET;
-import static me.th.system.security.enums.RequestMethodMode.POST;
-import static me.th.system.security.enums.RequestMethodMode.PUT;
-import static me.th.system.security.enums.RequestMethodMode.find;
+import static me.th.system.auth.enums.RequestMethodMode.ALL;
+import static me.th.system.auth.enums.RequestMethodMode.DELETE;
+import static me.th.system.auth.enums.RequestMethodMode.GET;
+import static me.th.system.auth.enums.RequestMethodMode.POST;
+import static me.th.system.auth.enums.RequestMethodMode.PUT;
+import static me.th.system.auth.enums.RequestMethodMode.find;
 
 @Configuration
 @EnableWebSecurity

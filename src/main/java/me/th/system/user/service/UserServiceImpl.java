@@ -6,8 +6,12 @@ import me.th.system.user.entity.User;
 import me.th.system.user.repository.UserRepository;
 import me.th.system.user.service.dto.UserDto;
 import me.th.system.user.service.dto.UserLoginDto;
+import me.th.system.user.service.dto.UserSignUpDto;
 import me.th.system.user.service.mapstruct.UserLoginMapper;
 import me.th.system.user.service.mapstruct.UserMapper;
+import me.th.system.user.service.mapstruct.UserSignUpMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +21,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final BCryptPasswordEncoder passwordEncoder;
+
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
     private final UserLoginMapper userLoginMapper;
+    private final UserSignUpMapper userSignUpMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -31,8 +38,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(User entity) {
+    public void create(UserSignUpDto userSignUp) {
+        User entity = userSignUpMapper.toEntity(userSignUp);
         checkUnique(entity);
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        if (StringUtils.isBlank(entity.getNickName())) {
+            entity.setNickName("用户_" + entity.getUsername());
+        }
         userRepository.save(entity);
     }
 

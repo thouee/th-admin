@@ -1,7 +1,7 @@
-package me.th.system.security.component;
+package me.th.system.auth.component;
 
 import lombok.extern.slf4j.Slf4j;
-import me.th.system.security.domain.SecurityProperties;
+import me.th.system.auth.domain.SecurityProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

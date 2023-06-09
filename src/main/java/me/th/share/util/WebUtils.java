@@ -12,6 +12,9 @@ import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -30,6 +33,20 @@ public class WebUtils {
             .build();
 
     private WebUtils() {
+    }
+
+    public static void renderString(HttpServletResponse response, String result) {
+        renderString(response, result, "application/json;charset=UTF-8");
+    }
+
+    public static void renderString(HttpServletResponse response, String result, String contentType) {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType(contentType);
+        try (PrintWriter out = response.getWriter()) {
+            out.append(result);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
     public static String getIP(HttpServletRequest request) {

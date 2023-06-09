@@ -1,7 +1,7 @@
-package me.th.system.security.config;
+package me.th.system.auth.config;
 
-import me.th.system.security.domain.LoginProperties;
-import me.th.system.security.domain.SecurityProperties;
+import me.th.system.auth.domain.LoginProperties;
+import me.th.system.auth.domain.SecurityProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

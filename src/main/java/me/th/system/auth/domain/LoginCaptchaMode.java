@@ -1,4 +1,4 @@
-package me.th.system.security.domain;
+package me.th.system.auth.domain;
 
 public enum LoginCaptchaMode {
 

@@ -1,4 +1,4 @@
-package me.th.system.security.domain;
+package me.th.system.auth.domain;
 
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.ChineseCaptcha;
@@ -77,7 +77,7 @@ public class LoginProperties {
         @Override
         protected char[] alphas() {
             int var0 = num(1, 10), var1 = num(1, 10), var2 = num(3);
-            int var3 = new int[]{var0 + var1, var1 - var2, var0 * var1}[var2];
+            int var3 = new int[]{var0 + var1, var0 - var1, var0 * var1}[var2];
             String var4 = OPERATOR[var2];
             this.setArithmeticString(MessageFormat.format("{0}{1}{2}", var0, var4, var1));
             this.chars = String.valueOf(var3);

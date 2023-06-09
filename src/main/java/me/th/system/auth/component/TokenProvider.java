@@ -1,4 +1,4 @@
-package me.th.system.security.component;
+package me.th.system.auth.component;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
@@ -14,7 +14,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import me.th.share.exception.Checker;
 import me.th.share.util.RedisUtils;
-import me.th.system.security.domain.SecurityProperties;
+import me.th.system.auth.domain.SecurityProperties;
 import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

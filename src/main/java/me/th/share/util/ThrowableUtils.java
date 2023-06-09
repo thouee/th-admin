@@ -18,4 +18,22 @@ public class ThrowableUtils {
             return sw.toString();
         }
     }
+
+    /**
+     * 获取指定包名前缀的异常堆栈信息
+     *
+     * @param throwable     -
+     * @param packagePrefix 包名前缀
+     * @return String
+     */
+    public static String getStackTraceByPrefix(Throwable throwable, String packagePrefix) {
+        StringBuilder s = new StringBuilder("\n").append(throwable);
+        for (StackTraceElement traceElement : throwable.getStackTrace()) {
+            if (!traceElement.getClassName().startsWith(packagePrefix)) {
+                break;
+            }
+            s.append("\n\tat ").append(traceElement);
+        }
+        return s.toString();
+    }
 }

@@ -1,4 +1,4 @@
-package me.th.system.security.service.dto;
+package me.th.system.auth.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;

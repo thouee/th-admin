@@ -37,6 +37,12 @@
     </properties>
 
     <dependencies>
+        <!-- devtools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+
         <!-- lombok 工具 -->
         <dependency>
             <groupId>org.projectlombok</groupId>

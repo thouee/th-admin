@@ -3,6 +3,7 @@ package me.th.share.exception;
 import lombok.extern.slf4j.Slf4j;
 import me.th.share.common.CommonResponseMode;
 import me.th.share.common.ER;
+import me.th.share.util.ThrowableUtils;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -40,6 +42,7 @@ public class GlobalExceptionHandler {
     private static final String ENV_PROD = "prod";
     private final MessageSource messageSource;
     private final Boolean isProd;
+    private static final String PACKAGE_PREFIX = "me.th";
 
     public GlobalExceptionHandler(@Value("${spring.profiles.active:dev}") String activeProfile,
                                   MessageSource messageSource) {
@@ -171,12 +174,22 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
+            // security 认证失败
+            BadCredentialsException.class
+    })
+    public ER handleBadCredentialsException(BadCredentialsException e) {
+        Integer code = Checker.USERNAME_OR_PASSWORD_INCORRECT.getCode();
+        log.error(ThrowableUtils.getStackTraceByPrefix(e, PACKAGE_PREFIX));
+        return new ER(code, getLocaleMessage(code, e.getMessage()));
+    }
+
+    @ExceptionHandler({
             // 业务异常
             BizException.class
     })
     public ER handleBizException(BaseException e) {
         String localeMessage = getLocaleMessage(e);
-        log.error(localeMessage, e);
+        log.error("业务异常 {}", ThrowableUtils.getStackTraceByPrefix(e, PACKAGE_PREFIX));
         return new ER(e.getAMode().getCode(), localeMessage);
     }
 

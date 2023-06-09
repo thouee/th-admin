@@ -1,4 +1,4 @@
-package me.th.system.security.rest;
+package me.th.system.auth.rest;
 
 import cn.hutool.core.util.IdUtil;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -10,18 +10,17 @@ import me.th.share.rest.AnonymousGetMapping;
 import me.th.share.rest.AnonymousPostMapping;
 import me.th.share.util.JacksonUtils;
 import me.th.share.util.RedisUtils;
-import me.th.system.security.component.TokenProvider;
-import me.th.system.security.domain.LoginCaptchaMode;
-import me.th.system.security.domain.LoginProperties;
-import me.th.system.security.domain.SecurityProperties;
-import me.th.system.security.service.dto.AuthUserDto;
-import me.th.system.security.service.dto.JwtUserDto;
+import me.th.system.auth.component.TokenProvider;
+import me.th.system.auth.domain.LoginCaptchaMode;
+import me.th.system.auth.domain.LoginProperties;
+import me.th.system.auth.domain.SecurityProperties;
+import me.th.system.auth.service.dto.AuthUserDto;
+import me.th.system.auth.service.dto.JwtUserDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +39,6 @@ public class AuthController {
     private final TokenProvider tokenProvider;
     private final LoginProperties loginProperties;
     private final SecurityProperties securityProperties;
-    private final BCryptPasswordEncoder passwordEncoder;
 
     @AnonymousPostMapping(value = "/login")
     public R<ObjectNode> login(@Validated @RequestBody AuthUserDto authUser, HttpServletRequest request) {
@@ -54,9 +52,8 @@ public class AuthController {
         boolean isTrue = StringUtils.isBlank(authUser.getCode()) || !code.equalsIgnoreCase(authUser.getCode());
         Checker.CAPTCHA_INCORRECT.isTrue(isTrue);
 
-        String password = passwordEncoder.encode(authUser.getPassword());
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(authUser.getUsername(), password);
+                new UsernamePasswordAuthenticationToken(authUser.getUsername(), authUser.getPassword());
         Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
