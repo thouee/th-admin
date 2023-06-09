@@ -97,7 +97,7 @@ public class TokenProvider implements InitializingBean {
         // 如果在续签检查时间范围内，则续签
         if (differ <= properties.getDetect()) {
             long renew = time + properties.getRenew();
-            redisUtils.expire(properties.getCaptchaKey() + token, renew, TimeUnit.MILLISECONDS);
+            redisUtils.expire(properties.getOnlineKey() + token, renew, TimeUnit.MILLISECONDS);
         }
     }
 
