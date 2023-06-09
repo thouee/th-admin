@@ -7,6 +7,12 @@
       "description": "账号单用户登录"
     },
     {
+      "name": "login.keep-alive-time",
+      "type": "java.lang.Long",
+      "defaultValue": "7200，2小时",
+      "description": "Redis 用户登录缓存，存活时间，单位秒"
+    },
+    {
       "name": "login.login-captcha.captcha-type",
       "type": "me.th.system.auth.domain.LoginCaptchaMode",
       "defaultValue": "arithmetic",
@@ -67,7 +73,7 @@
     {
       "name": "security.jwt.expire",
       "type": "java.lang.Long",
-      "defaultValue": "1_800_000L，30分钟",
+      "defaultValue": "1_800_000，30分钟",
       "description": "token 过期时间，单位毫秒"
     },
     {
@@ -85,13 +91,13 @@
     {
       "name": "security.jwt.detect",
       "type": "java.lang.Long",
-      "defaultValue": "300_000L，5分钟",
+      "defaultValue": "300_000，5分钟",
       "description": "token 续期检测时长，单位毫秒"
     },
     {
       "name": "security.jwt.renew",
       "type": "java.lang.Long",
-      "defaultValue": "1_800_000L，30分钟",
+      "defaultValue": "1_800_000，30分钟",
       "description": "token 续期时间，单位毫秒"
     }
   ]

@@ -26,7 +26,7 @@ public class LoginProperties {
 
     private LoginCaptcha loginCaptcha;
 
-    public static final String cacheKey = "USER-LOGIN-CODE";
+    public static final String loginCacheKey = "USER-LOGIN-CODE";
     private static final String[] OPERATOR = {"+", "-", "x"};
 
     /**

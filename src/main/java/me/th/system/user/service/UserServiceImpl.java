@@ -71,7 +71,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserLoginDto getLoginData(String username) {
         User user = userRepository.findByUsername(username);
-        Checker.ENTITY_NOT_FOUND_ERROR.isNull(user, "用户");
         return userLoginMapper.toDto(user);
     }
 

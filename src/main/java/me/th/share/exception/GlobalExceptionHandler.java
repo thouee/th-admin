@@ -6,12 +6,12 @@ import me.th.share.common.ER;
 import me.th.share.util.ThrowableUtils;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -31,23 +31,17 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final String ENV_PROD = "prod";
     private final MessageSource messageSource;
-    private final Boolean isProd;
     private static final String PACKAGE_PREFIX = "me.th";
 
-    public GlobalExceptionHandler(@Value("${spring.profiles.active:dev}") String activeProfile,
-                                  MessageSource messageSource) {
+    public GlobalExceptionHandler(MessageSource messageSource) {
         this.messageSource = messageSource;
-        this.isProd = new HashSet<>(Arrays.asList(activeProfile.split(","))).contains(ENV_PROD);
     }
 
     @ExceptionHandler({
@@ -168,9 +162,7 @@ public class GlobalExceptionHandler {
             msg.append(aError.getDefaultMessage() == null ? "" : aError.getDefaultMessage());
             errorMessage.add(msg.toString());
         }
-        final String desc = isProd ? getLocaleMessage(CommonResponseMode.BAD_REQUEST.getCode(), "") :
-                String.join("，", errorMessage);
-        return new ER(CommonResponseMode.BAD_REQUEST.getCode(), desc);
+        return new ER(CommonResponseMode.BAD_REQUEST.getCode(), String.join("，", errorMessage));
     }
 
     @ExceptionHandler({
@@ -180,6 +172,19 @@ public class GlobalExceptionHandler {
     public ER handleBadCredentialsException(BadCredentialsException e) {
         Integer code = Checker.USERNAME_OR_PASSWORD_INCORRECT.getCode();
         log.error(ThrowableUtils.getStackTraceByPrefix(e, PACKAGE_PREFIX));
+        return new ER(code, getLocaleMessage(code, e.getMessage()));
+    }
+
+    @ExceptionHandler({
+            // security
+            InternalAuthenticationServiceException.class
+    })
+    public ER handleInternalAuthenticationServiceException(InternalAuthenticationServiceException e) {
+        log.error(e.getMessage(), e);
+        Integer code = Checker.SERVER_ERROR.getCode();
+        if (Checker.USER_NOT_ENABLED.getMessage().equals(e.getMessage())) {
+            code = Checker.USER_NOT_ENABLED.getCode();
+        }
         return new ER(code, getLocaleMessage(code, e.getMessage()));
     }
 

@@ -68,6 +68,7 @@ spring:
 
 login:
   single-login: false
+  keep-alive-time: 7200
   login-captcha:
     captcha-type: arithmetic
     expire: 5
