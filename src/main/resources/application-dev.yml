@@ -65,6 +65,11 @@ spring:
     port: 6379
     password: Aa@123456
     connect-timeout: 5000
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
 
 login:
   single-login: false
