@@ -10,25 +10,29 @@ import java.lang.annotation.Target;
 public @interface Query {
 
     /**
-     * 基本对象的属性名
+     * 基本对象的属性名，默认使用属性名
      */
-    String propName();
+    String propName() default "";
+
     /**
      * 查询方式
      */
-    Type type();
-    /** 
+    Type type() default Type.EQUAL;
+
+    /**
      * 连接查询的属性名
      */
     String joinName() default "";
+
     /**
      * 连接方式，默认左连接
      */
     Join join() default Join.LEFT;
-    /** 
-     * 模糊查询，仅支持String类型，多个字段使用 , 隔开
+
+    /**
+     * 模糊查询，仅支持String类型
      */
-    String blurry() default "";
+    String[] blurry() default {};
 
     enum Type {
         /**
@@ -93,7 +97,7 @@ public @interface Query {
     enum Join {
         LEFT,
         INNER,
-        RIGHT
+        RIGHT,
         ;
     }
 }

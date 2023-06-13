@@ -7,6 +7,7 @@ import me.th.share.util.WebUtils;
 import me.th.system.auth.domain.SecurityProperties;
 import me.th.system.auth.service.dto.JwtUserDto;
 import me.th.system.auth.service.dto.OnlineUserDto;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +47,7 @@ public class OnlineUserService {
         onlineUserDto.setKey(token);
         onlineUserDto.setLoginTime(LocalDateTime.now());
 
-        redisUtils.set(securityProperties.getOnlineKey() + jwtUser.getUsername(), onlineUserDto,
+        redisUtils.set(securityProperties.getOnlineKey() + token, onlineUserDto,
                 securityProperties.getExpire(), TimeUnit.MILLISECONDS);
     }
 
@@ -92,5 +93,28 @@ public class OnlineUserService {
      */
     public void logout(String key) {
         redisUtils.del(securityProperties.getOnlineKey() + key);
+    }
+
+    /**
+     * 强退用户
+     *
+     * @param key -
+     */
+    public void kickOut(String key) {
+        redisUtils.del(securityProperties.getOnlineKey() + key);
+    }
+
+    /**
+     * 根据用户名强退用户
+     *
+     * @param username -
+     */
+    @Async
+    public void kickOutByUsername(String username) {
+        List<OnlineUserDto> onlineUsers = getAll(onlineUserDto -> onlineUserDto.getUsername().equals(username));
+        for (OnlineUserDto onlineUser : onlineUsers) {
+            String key = onlineUser.getKey();
+            kickOut(key);
+        }
     }
 }

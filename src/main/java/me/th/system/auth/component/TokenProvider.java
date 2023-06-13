@@ -89,11 +89,11 @@ public class TokenProvider implements InitializingBean {
      */
     public void checkRenew(String token) {
         // 计算 token 过期时间
-        long time = redisUtils.getExpire(properties.getOnlineKey() + token) * 1000;
+        long time = redisUtils.getExpire(properties.getOnlineKey() + token, TimeUnit.MILLISECONDS);
         DateTime expireDate = DateUtil.offset(new Date(), DateField.MILLISECOND, (int) time);
         // 当前时间与过期时间的时间差
         long differ = expireDate.getTime() - System.currentTimeMillis();
-        Checker.AUTH_EXPIRE_ERROR.isTrue(differ <= 0);
+
         // 如果在续签检查时间范围内，则续签
         if (differ <= properties.getDetect()) {
             long renew = time + properties.getRenew();
@@ -104,7 +104,7 @@ public class TokenProvider implements InitializingBean {
     public String getToken(HttpServletRequest request) {
         String token = request.getHeader(properties.getHeader());
         if (token != null && token.startsWith(properties.getPrefix())) {
-            return token.substring(properties.getPrefix().length() + 1);
+            return token.substring(properties.getPrefix().length());
         }
         return null;
     }

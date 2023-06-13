@@ -7,6 +7,8 @@ import me.th.share.rest.AnonymousAccess;
 import me.th.system.auth.component.TokenProvider;
 import me.th.system.auth.domain.SecurityProperties;
 import me.th.system.auth.enums.RequestMethodMode;
+import me.th.system.auth.service.OnlineUserService;
+import me.th.system.auth.service.UserCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,9 +50,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final AccessDeniedHandler jwtAccessDeniedHandler;
-    private final TokenProvider tokenProvider;
-    private final SecurityProperties properties;
     private final ApplicationContext applicationContext;
+    private final TokenConfigurer tokenConfigurer;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -99,11 +100,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(anonymous.get(ALL).toArray(new String[0])).permitAll()
                 // 余下所有请求都需要认证
                 .anyRequest().authenticated()
-                .and().apply(securityConfigurerAdapter());
-    }
-
-    private TokenConfigurer securityConfigurerAdapter() {
-        return new TokenConfigurer(tokenProvider, properties);
+                .and().apply(tokenConfigurer);
     }
 
     @Bean

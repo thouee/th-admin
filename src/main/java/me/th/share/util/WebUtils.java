@@ -1,11 +1,6 @@
 package me.th.share.util;
 
-import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import me.th.share.constant.Constant;
-import me.th.share.properties.AppProperties;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 import net.dreamlu.mica.ip2region.core.IpInfo;
 import nl.basjes.parse.useragent.UserAgent;
@@ -25,7 +20,8 @@ import java.util.Enumeration;
 public class WebUtils {
 
     public static final String COMMA = ",";
-    public static final String LOCALHOST = "127.0.0.1";
+    private static final String LOCALHOST_IP_1 = "127.0.0.1";
+    private static final String LOCALHOST_IP_2 = "0:0:0:0:0:0:0:1";
     private static final String UNKNOWN = "unknown";
     private static final Ip2regionSearcher IP_SEARCHER = SpringContextHolder.getBean(Ip2regionSearcher.class);
     private static final UserAgentAnalyzer USER_AGENT_ANALYZER = UserAgentAnalyzer
@@ -50,7 +46,14 @@ public class WebUtils {
     }
 
     public static String getIP(HttpServletRequest request) {
-        String ip = request.getHeader("x-forward-for");
+        String ip = null;
+        ip = request.getHeader("X-Original-Forwarded-For");
+        if (ipIsNull(ip)) {
+            ip = request.getHeader("X-Forwarded-For");
+        }
+        if (ipIsNull(ip)) {
+            ip = request.getHeader("x-forwarded-for");
+        }
         if (ipIsNull(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
@@ -58,18 +61,24 @@ public class WebUtils {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
         if (ipIsNull(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ipIsNull(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ipIsNull(ip)) {
             ip = request.getRemoteAddr();
+            if (LOCALHOST_IP_1.equalsIgnoreCase(ip) || LOCALHOST_IP_2.equalsIgnoreCase(ip)) {
+                try {
+                    ip = InetAddress.getLocalHost().getHostAddress();
+                } catch (UnknownHostException e) {
+                    log.error(e.getMessage(), e);
+                    ip = "";
+                }
+            }
         }
         if (ip.contains(COMMA)) {
             ip = ip.split(COMMA)[0];
-        }
-        if (LOCALHOST.equals(ip)) {
-            // 获取本机真正的 ip 地址
-            try {
-                ip = InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException e) {
-                log.error(e.getMessage(), e);
-            }
         }
         return ip;
     }
@@ -78,33 +87,13 @@ public class WebUtils {
         return ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip);
     }
 
+    /**
+     * 根据 ip 获得详细地址
+     *
+     * @param ip -
+     * @return String
+     */
     public static String getCityInfo(String ip) {
-        if (AppProperties.localParse) {
-            return getLocalCityInfo(ip);
-        } else {
-            return getHttpCityInfo(ip);
-        }
-    }
-
-    /**
-     * 根据 ip 获取详细地址
-     *
-     * @param ip -
-     * @return String
-     */
-    public static String getHttpCityInfo(String ip) {
-        String api = String.format(Constant.Url.IP_URL, ip);
-        JSONObject result = JSONUtil.parseObj(HttpUtil.get(ip));
-        return result.get("addr", String.class);
-    }
-
-    /**
-     * 根据 ip 获取本地详细地址
-     *
-     * @param ip -
-     * @return String
-     */
-    public static String getLocalCityInfo(String ip) {
         IpInfo ipInfo = IP_SEARCHER.memorySearch(ip);
         return ipInfo != null ? ipInfo.getAddress() : null;
     }

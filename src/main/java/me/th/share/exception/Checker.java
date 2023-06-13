@@ -13,7 +13,9 @@ public enum Checker implements BizExceptionCheck {
     CAPTCHA_NOT_FOUND(3003, "验证码已过期"),
     CAPTCHA_INCORRECT(3004, "验证码不正确"),
     USERNAME_OR_PASSWORD_INCORRECT(3005, "用户名或密码错误"),
-    USER_NOT_ENABLED(4001, "用户被禁用"),
+    USER_NOT_ENABLED(3006, "用户被禁用"),
+    TWICE_PASSWORD_NOT_EQUAL(3007, "两次密码不相同"),
+    PASSWORD_NOT_INCORRECT(3008, "原密码错误"),
     ;
 
     private final Integer code;

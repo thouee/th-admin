@@ -14,6 +14,7 @@ import me.th.system.auth.component.TokenProvider;
 import me.th.system.auth.domain.LoginCaptchaMode;
 import me.th.system.auth.domain.LoginProperties;
 import me.th.system.auth.domain.SecurityProperties;
+import me.th.system.auth.service.OnlineUserService;
 import me.th.system.auth.service.dto.AuthUserDto;
 import me.th.system.auth.service.dto.JwtUserDto;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +41,7 @@ public class AuthController {
     private final TokenProvider tokenProvider;
     private final LoginProperties loginProperties;
     private final SecurityProperties securityProperties;
+    private final OnlineUserService onlineUserService;
 
     @AnonymousPostMapping(value = "/login")
     public R<ObjectNode> login(@Validated @RequestBody AuthUserDto authUser, HttpServletRequest request) {
@@ -59,6 +62,13 @@ public class AuthController {
 
         String token = tokenProvider.createToken(authenticationToken);
         JwtUserDto jwtUser = (JwtUserDto) authenticate.getPrincipal();
+
+        // 保存在线用户信息
+        onlineUserService.save(jwtUser, token, request);
+        // 强退之前已经登陆的 token
+        if (loginProperties.isSingleLogin()) {
+            onlineUserService.kickOut(token);
+        }
 
         ObjectNode node = JacksonUtils.newObjectNode();
         node.put("token", securityProperties.getPrefix() + token);
@@ -82,5 +92,12 @@ public class AuthController {
         node.put("captcha", captcha.toBase64());
         node.put("uuid", uuid);
         return R.ok(node);
+    }
+
+    @DeleteMapping("/logout")
+    public R<Void> logout(HttpServletRequest request) {
+        String token = tokenProvider.getToken(request);
+        onlineUserService.logout(token);
+        return R.ok();
     }
 }

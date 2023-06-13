@@ -8,16 +8,21 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class UserSignUpDto implements Serializable {
+public class UserAddDto implements Serializable {
 
-    private static final long serialVersionUID = -7684559668171713433L;
+    private static final long serialVersionUID = 8385225374470000097L;
 
     @NotBlank(message = "用户名不可为空")
     private String username;
 
+    private String nickName;
+
     @NotBlank(message = "密码不可为空")
     private String password;
 
-    @NotBlank(message = "确认密码不可为空")
-    private String checkPassword;
+    @NotBlank(message = "手机号不可为空")
+    private String phone;
+
+    @NotBlank(message = "邮箱不可为空")
+    private String email;
 }
