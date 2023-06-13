@@ -21,6 +21,7 @@ import me.th.system.auth.domain.SecurityProperties;
 import me.th.system.auth.service.OnlineUserService;
 import me.th.system.auth.service.dto.AuthUserDto;
 import me.th.system.auth.service.dto.JwtUserDto;
+import me.th.system.log.annotation.Logging;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -49,6 +50,7 @@ public class AuthController {
     private final SecurityProperties securityProperties;
     private final OnlineUserService onlineUserService;
 
+    @Logging("用户登录")
     @ApiOperation(value = "用户登录")
     @AnonymousPostMapping(value = "/login")
     public R<ObjectNode> login(@Validated @RequestBody AuthUserDto authUser, HttpServletRequest request) {

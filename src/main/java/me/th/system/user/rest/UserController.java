@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import me.th.share.common.PageData;
 import me.th.share.common.R;
 import me.th.share.rest.AnonymousPostMapping;
+import me.th.system.log.annotation.Logging;
 import me.th.system.user.service.UserServiceImpl;
 import me.th.system.user.service.dto.UserAddDto;
 import me.th.system.user.service.dto.UserDto;
@@ -37,6 +38,7 @@ public class UserController {
 
     private final UserServiceImpl userService;
 
+    @Logging("用户注册")
     @ApiOperation(value = "用户注册")
     @ApiOperationSupport(author = "thou")
     @AnonymousPostMapping("/signUp")
@@ -52,6 +54,7 @@ public class UserController {
         return R.ok(PageData);
     }
 
+    @Logging("用户添加")
     @ApiOperation(value = "用户添加")
     @PostMapping("/add")
     public R<Void> addUser(@Validated @RequestBody UserAddDto userAdd) {
@@ -59,6 +62,7 @@ public class UserController {
         return R.ok();
     }
 
+    @Logging("修改密码")
     @ApiOperation(value = "修改密码")
     @PostMapping("/update/password")
     public R<Void> updatePassword(@Validated @RequestBody UserUpdatePasswordDto userUpdatePassword) {
@@ -66,6 +70,7 @@ public class UserController {
         return R.ok();
     }
 
+    @Logging("用户删除")
     @ApiOperation(value = "批量删除")
     @DeleteMapping("/multiDelete")
     public R<Void> multiDeleteUser(@RequestBody List<Long> ids) {
@@ -75,6 +80,7 @@ public class UserController {
         return R.ok();
     }
 
+    @Logging("用户删除")
     @ApiOperation(value = "用户删除")
     @DeleteMapping("/delete/{id}")
     public R<Void> deleteUser(@PathVariable @NotNull(message = "不可删除 id 为空的用户") Long id) {

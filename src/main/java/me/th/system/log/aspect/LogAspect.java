@@ -2,15 +2,16 @@ package me.th.system.log.aspect;
 
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import me.th.system.log.annotation.Logging;
-import me.th.system.log.entity.Log;
-import me.th.system.log.service.LogService;
 import me.th.share.constant.Constant;
+import me.th.share.util.JacksonUtils;
 import me.th.share.util.RequestHolder;
 import me.th.share.util.SecurityUtils;
 import me.th.share.util.StringUtils;
 import me.th.share.util.ThrowableUtils;
 import me.th.share.util.WebUtils;
+import me.th.system.log.annotation.Logging;
+import me.th.system.log.entity.Log;
+import me.th.system.log.service.LogService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -53,7 +54,8 @@ public class LogAspect {
         Object result = joinPoint.proceed();
         log.setCostTime(System.currentTimeMillis() - currentTime.get());
         currentTime.remove();
-        log.setResult(JSONUtil.toJsonStr(result).getBytes());
+        String objString = JacksonUtils.toString(result);
+        log.setResult(objString == null ? "{}".getBytes() : objString.getBytes());
         saveLog(joinPoint, log);
         return result;
     }
@@ -64,7 +66,7 @@ public class LogAspect {
         log.setLogType(Constant.LOG_TYPE_ERROR);
         log.setCostTime(System.currentTimeMillis() - currentTime.get());
         currentTime.remove();
-        log.setResult(ThrowableUtils.getStackTrace(e).getBytes());
+        log.setResult(ThrowableUtils.getStackTraceByPrefix(e, "me.th").getBytes());
         saveLog(((ProceedingJoinPoint) joinPoint), log);
     }
 
