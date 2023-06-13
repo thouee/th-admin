@@ -2,7 +2,11 @@ package me.th.system.auth.rest;
 
 import cn.hutool.core.util.IdUtil;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.wf.captcha.base.Captcha;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.th.share.common.R;
 import me.th.share.exception.Checker;
@@ -31,6 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
+@Api(tags = "系统：授权模块")
+@ApiSupport(author = "thou")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -43,6 +49,7 @@ public class AuthController {
     private final SecurityProperties securityProperties;
     private final OnlineUserService onlineUserService;
 
+    @ApiOperation(value = "用户登录")
     @AnonymousPostMapping(value = "/login")
     public R<ObjectNode> login(@Validated @RequestBody AuthUserDto authUser, HttpServletRequest request) {
         // 查询验证码
@@ -76,6 +83,7 @@ public class AuthController {
         return R.ok(node);
     }
 
+    @ApiOperation(value = "获取验证码")
     @AnonymousGetMapping("/captcha")
     public R<ObjectNode> getCaptcha() {
         Captcha captcha = loginProperties.getCaptcha();
@@ -94,6 +102,7 @@ public class AuthController {
         return R.ok(node);
     }
 
+    @ApiOperation(value = "退出登录")
     @DeleteMapping("/logout")
     public R<Void> logout(HttpServletRequest request) {
         String token = tokenProvider.getToken(request);

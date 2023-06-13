@@ -4,11 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.map.MapUtil;
 import lombok.RequiredArgsConstructor;
 import me.th.share.rest.AnonymousAccess;
-import me.th.system.auth.component.TokenProvider;
-import me.th.system.auth.domain.SecurityProperties;
 import me.th.system.auth.enums.RequestMethodMode;
-import me.th.system.auth.service.OnlineUserService;
-import me.th.system.auth.service.UserCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -84,7 +80,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/webSocket/**")
                 .permitAll()
                 // 放行 Swagger 文档
-                .antMatchers("/swagger-ui.html", "/swagger-resource/**", "/webjars/**", "/*/api-docs")
+                .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/doc.html", "/favicon.ico")
                 .permitAll()
                 // 放行文件
                 .antMatchers("/avatar/**", "/file/**").permitAll()

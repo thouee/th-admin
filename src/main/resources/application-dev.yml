@@ -1,6 +1,5 @@
 server:
   port: 9000
-
 spring:
   application:
     name: th-admin
@@ -67,10 +66,15 @@ spring:
     connect-timeout: 5000
   mvc:
     throw-exception-if-no-handler-found: true
+    pathmatch:
+      matching-strategy: ant_path_matcher
   web:
     resources:
       add-mappings: false
+knife4j:
+  enable: true
 
+# 自定义
 login:
   single-login: false
   keep-alive-time: 7200
@@ -91,3 +95,5 @@ security:
     detect: 300_000
     renew: 1_800_000
     base64-secret: ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI
+swagger:
+  enabled: true

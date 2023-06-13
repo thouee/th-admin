@@ -1,5 +1,7 @@
 package me.th.share.common;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import me.th.share.base.BaseResponse;
@@ -9,8 +11,10 @@ import me.th.share.base.BaseResponse;
  */
 @Getter
 @Setter
+@ApiModel
 public class R<T> extends BaseResponse {
 
+    @ApiModelProperty("数据")
     private T data;
 
     protected R() {

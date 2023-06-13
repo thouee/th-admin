@@ -99,6 +99,12 @@
       "type": "java.lang.Long",
       "defaultValue": "1_800_000，30分钟",
       "description": "token 续期时间，单位毫秒"
+    },
+    {
+      "name": "swagger.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": "true",
+      "description": "是否开启 swagger，默认开启"
     }
   ]
 }

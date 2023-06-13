@@ -1,6 +1,6 @@
 package me.th.share.base;
 
-// import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -27,22 +27,22 @@ public class BaseEntity implements Serializable {
 
     @CreatedBy
     @Column(name = "created_by", updatable = false)
-    // @ApiModelProperty(value = "创建者", hidden = true)
+    @ApiModelProperty(value = "创建者", hidden = true)
     private String createdBy;
 
     @LastModifiedBy
     @Column(name = "updated_by")
-    // @ApiModelProperty(value = "更新者", hidden = true)
+    @ApiModelProperty(value = "更新者", hidden = true)
     private String updatedBy;
 
     @CreationTimestamp
     @Column(name = "created_time", updatable = false)
-    // @ApiModelProperty(value = "创建时间", hidden = true)
+    @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
 
     @UpdateTimestamp
     @Column(name = "updated_time")
-    // @ApiModelProperty(value = "更新时间", hidden = true)
+    @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updatedTime;
 
     // TODO 此处可根据需要添加 is_deleted

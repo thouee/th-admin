@@ -1,6 +1,10 @@
 package me.th.system.user.rest;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.th.share.common.PageData;
 import me.th.share.common.R;
@@ -24,6 +28,8 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 
+@Api(tags = "系统：用户模块")
+@ApiSupport(author = "thou")
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -31,32 +37,36 @@ public class UserController {
 
     private final UserServiceImpl userService;
 
-    // 用户注册，由用户自己注册
+    @ApiOperation(value = "用户注册")
+    @ApiOperationSupport(author = "thou")
     @AnonymousPostMapping("/signUp")
     public R<Void> signUp(@Validated @RequestBody UserSignUpDto userSignUp) {
         userService.create(userSignUp);
         return R.ok();
     }
 
+    @ApiOperation(value = "用户数据分页")
     @GetMapping("/page")
     public R<PageData<UserDto>> queryUser(@RequestBody UserQueryCriteria criteria) {
         PageData<UserDto> PageData = userService.queryAll(criteria);
         return R.ok(PageData);
     }
 
-    // 用户添加，由登录用户主动添加用户
+    @ApiOperation(value = "用户添加")
     @PostMapping("/add")
     public R<Void> addUser(@Validated @RequestBody UserAddDto userAdd) {
         userService.create(userAdd);
         return R.ok();
     }
 
+    @ApiOperation(value = "修改密码")
     @PostMapping("/update/password")
     public R<Void> updatePassword(@Validated @RequestBody UserUpdatePasswordDto userUpdatePassword) {
         userService.updatePassword(userUpdatePassword);
         return R.ok();
     }
 
+    @ApiOperation(value = "批量删除")
     @DeleteMapping("/multiDelete")
     public R<Void> multiDeleteUser(@RequestBody List<Long> ids) {
         if (CollectionUtil.isNotEmpty(ids)) {
@@ -65,6 +75,7 @@ public class UserController {
         return R.ok();
     }
 
+    @ApiOperation(value = "用户删除")
     @DeleteMapping("/delete/{id}")
     public R<Void> deleteUser(@PathVariable @NotNull(message = "不可删除 id 为空的用户") Long id) {
         userService.delete(id);
