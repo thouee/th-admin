@@ -47,7 +47,7 @@ public class UserController {
         return R.ok();
     }
 
-    @ApiOperation(value = "用户数据分页")
+    @ApiOperation(value = "用户查询")
     @GetMapping("/page")
     public R<PageData<UserDto>> queryUser(@RequestBody UserQueryCriteria criteria) {
         PageData<UserDto> PageData = userService.queryAll(criteria);
@@ -83,7 +83,7 @@ public class UserController {
     @Logging("用户删除")
     @ApiOperation(value = "用户删除")
     @DeleteMapping("/delete/{id}")
-    public R<Void> deleteUser(@PathVariable @NotNull(message = "不可删除 id 为空的用户") Long id) {
+    public R<Void> deleteUser(@PathVariable Long id) {
         userService.delete(id);
         return R.ok();
     }

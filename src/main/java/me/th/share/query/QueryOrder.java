@@ -1,5 +1,6 @@
 package me.th.share.query;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,10 +15,12 @@ public class QueryOrder implements Serializable {
     /**
      * 排序方向，字典[order_direction][value]
      */
+    @ApiModelProperty(value = "排序方向")
     private Integer direction;
 
     /**
      * 排序列名
      */
+    @ApiModelProperty(value = "排序列名")
     private String column;
 }
