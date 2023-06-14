@@ -28,7 +28,7 @@ public class UserCacheManager {
      */
     public JwtUserDto getUserCache(String username) {
         if (StringUtils.isNotBlank(username)) {
-            Object o = redisUtils.hGet(LoginProperties.loginCacheKey, username);
+            Object o = redisUtils.get(LoginProperties.loginCacheKey + username);
             if (o != null) {
                 return ((JwtUserDto) o);
             }
@@ -47,7 +47,7 @@ public class UserCacheManager {
         if (StringUtils.isNotBlank(username)) {
             // 修改过期时间，避免同时过期
             long expire = keepAliveTime + RandomUtil.randomInt(900, 1800);
-            redisUtils.hSet(LoginProperties.loginCacheKey, username, jwtUser, expire);
+            redisUtils.set(LoginProperties.loginCacheKey + username, jwtUser, expire);
         }
     }
 
@@ -58,7 +58,7 @@ public class UserCacheManager {
      */
     public void cleanUserCache(String username) {
         if (StringUtils.isNotBlank(username)) {
-            redisUtils.hDel(LoginProperties.loginCacheKey, username);
+            redisUtils.del(LoginProperties.loginCacheKey + username);
         }
     }
 }

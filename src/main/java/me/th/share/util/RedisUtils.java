@@ -504,6 +504,46 @@ public class RedisUtils {
     }
 
     /**
+     * 添加
+     *
+     * @param key   -
+     * @param value -
+     * @param score -
+     * @return boolean
+     */
+    public boolean zAdd(String key, Object value, double score) {
+        try {
+            redisTemplate.opsForZSet().add(key, value, score);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
+    }
+
+    /**
+     * 删除
+     *
+     * @param key   -
+     * @param value -
+     */
+    public void zDel(String key, Object... value) {
+        redisTemplate.opsForZSet().remove(key, value);
+    }
+
+    /**
+     * 范围获取
+     *
+     * @param key -
+     * @param min -
+     * @param max -
+     * @return Object
+     */
+    public Object zRangeByScore(String key, double min, double max) {
+        return redisTemplate.opsForZSet().rangeByScore(key, min, max);
+    }
+
+    /**
      * 获取 list 缓存内容
      *
      * @param key   -
